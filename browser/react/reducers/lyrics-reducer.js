@@ -8,7 +8,7 @@ const initialState = { text: '' };
 
 // use Object.assign to maintain immutability
 // if we receive an action whose type we don't recognize, we return the previous state
-export default function reducer (state=initialState, action) {
+export default function lyricsReducer (state=initialState, action) {
 	switch(action.type) {
 		case SET_LYRICS:
 			return Object.assign({}, state, { text: action.lyric });

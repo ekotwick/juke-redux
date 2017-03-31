@@ -10,6 +10,9 @@ import Album from '../components/Album';
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
 
+import store from '../store';
+import { fetchPlaying, fetchStopping } from '../action-creators/player';
+
 import { convertAlbum, convertAlbums, convertSong, skip } from '../utils';
 
 export default class AppContainer extends Component {
@@ -54,47 +57,51 @@ export default class AppContainer extends Component {
       playlists: playlists
     });
   }
-
+  //FIX
   play () {
     AUDIO.play();
-    this.setState({ isPlaying: true });
+    // this.setState({ isPlaying: true });
+    store.dispatch(fetchPlaying());
   }
-
+  //FIX
   pause () {
     AUDIO.pause();
-    this.setState({ isPlaying: false });
+    // this.setState({ isPlaying: false });
+    store.dispatch(fetchStopping());
   }
-
+  //FIX
   load (currentSong, currentSongList) {
     AUDIO.src = currentSong.audioUrl;
     AUDIO.load();
-    this.setState({
-      currentSong: currentSong,
-      currentSongList: currentSongList
-    });
+    // this.setState({
+    //   currentSong: currentSong,
+    //   currentSongList: currentSongList
+    // });
+    store.dispatch(fetchSongList(currentSongList));
+    store.dispatch(fetchCurrentSong(currentSong));
   }
-
+  //FIX
   startSong (song, list) {
     this.pause();
     this.load(song, list);
     this.play();
   }
-
+  //FIX
   toggleOne (selectedSong, selectedSongList) {
     if (selectedSong.id !== this.state.currentSong.id)
       this.startSong(selectedSong, selectedSongList);
     else this.toggle();
   }
-
+  //FIX
   toggle () {
     if (this.state.isPlaying) this.pause();
     else this.play();
   }
-
+  //FIX
   next () {
     this.startSong(...skip(1, this.state));
   }
-
+  //FIX
   prev () {
     this.startSong(...skip(-1, this.state));
   }
